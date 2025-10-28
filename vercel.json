@@ -6,7 +6,7 @@
       "use": "@vercel/node",
       "config": {
         "maxDuration": 30,
-        "includeFiles": ["src/**", "dist/**", "prisma/**", "package.json", "tsconfig.json", "tsup.config.ts"]
+        "includeFiles": ["src/**", "dist/**", "prisma/**", "package.json", "tsconfig.json", "tsconfig.vercel.json", "tsup.config.ts", "vercel-build.sh"]
       }
     }
   ],
