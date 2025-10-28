@@ -24,7 +24,6 @@
     "db:migrate:dev": "node runWithProvider.js \"rm -rf ./prisma/migrations && cp -r ./prisma/DATABASE_PROVIDER-migrations ./prisma/migrations && npx prisma migrate dev --schema ./prisma/DATABASE_PROVIDER-schema.prisma && cp -r ./prisma/migrations/* ./prisma/DATABASE_PROVIDER-migrations\"",
     "db:migrate:dev:win": "node runWithProvider.js \"xcopy /E /I prisma\\DATABASE_PROVIDER-migrations prisma\\migrations && npx prisma migrate dev --schema prisma\\DATABASE_PROVIDER-schema.prisma\"",
     "prepare": "husky",
-    "vercel-build": "bash vercel-build.sh",
     "vercel-build-alt": "bash vercel-build-alt.sh",
     "vercel-build-simple": "bash vercel-build-simple.sh",
     "vercel-build-ultra": "bash vercel-build-ultra.sh",
