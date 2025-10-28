@@ -24,9 +24,9 @@ if [ -z "$DATABASE_PROVIDER" ]; then
   echo "📊 Setting DATABASE_PROVIDER to postgresql"
 fi
 
-# Generate Prisma client
-echo "🔧 Generating Prisma client..."
-npm run db:generate
+# Generate Prisma client directly (bypass npm script)
+echo "🔧 Generating Prisma client directly..."
+npx prisma generate --schema ./prisma/postgresql-schema.prisma
 
 # Build with tsup only (skip TypeScript check completely)
 echo "🏗️ Building with tsup (skipping TypeScript check)..."
