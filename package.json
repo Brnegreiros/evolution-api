@@ -3,7 +3,7 @@
   "version": "2.3.6",
   "description": "Rest api for communication with WhatsApp",
   "main": "./dist/main.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "build": "npx prisma generate --schema ./prisma/postgresql-schema.prisma && npx tsup",
     "build:vercel": "npx prisma generate --schema ./prisma/postgresql-schema.prisma && npx tsup",

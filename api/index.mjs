@@ -1,5 +1,5 @@
-// Vercel serverless function entry point
-const express = require('express');
+// Vercel serverless function entry point for ES Modules
+import express from 'express';
 
 // Create Express app
 const app = express();
@@ -23,15 +23,21 @@ app.use((req, res, next) => {
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Evolution API is running' });
+  res.json({ 
+    status: 'OK', 
+    message: 'Evolution API is running',
+    version: '2.3.6',
+    platform: 'Vercel',
+    timestamp: new Date().toISOString()
+  });
 });
 
-// Import and mount Evolution API routes with dynamic import
+// Import and mount Evolution API routes
 let routerLoaded = false;
 app.use('*', async (req, res, next) => {
   if (!routerLoaded) {
     try {
-      // Use dynamic import for ES modules
+      // Dynamic import for ES modules
       const { router } = await import('../dist/api/routes/index.router.js');
       app.use('/', router);
       routerLoaded = true;
@@ -49,5 +55,14 @@ app.use('*', async (req, res, next) => {
   }
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Application error:', err);
+  res.status(500).json({ 
+    error: 'Internal Server Error', 
+    details: err.message 
+  });
+});
+
 // Vercel serverless function handler
-module.exports = app;
+export default app;

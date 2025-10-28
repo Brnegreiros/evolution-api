@@ -23,30 +23,33 @@ app.use((req, res, next) => {
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Evolution API is running' });
+  res.json({ 
+    status: 'OK', 
+    message: 'Evolution API is running',
+    version: '2.3.6',
+    platform: 'Vercel'
+  });
 });
 
-// Import and mount Evolution API routes with dynamic import
-let routerLoaded = false;
-app.use('*', async (req, res, next) => {
-  if (!routerLoaded) {
-    try {
-      // Use dynamic import for ES modules
-      const { router } = await import('../dist/api/routes/index.router.js');
-      app.use('/', router);
-      routerLoaded = true;
-      // Process the current request
-      router(req, res, next);
-    } catch (error) {
-      console.error('Failed to load Evolution API routes:', error);
-      res.status(500).json({ 
-        error: 'Evolution API not loaded',
-        details: error.message 
-      });
-    }
-  } else {
-    next();
-  }
+// Basic API info endpoint
+app.get('/api/info', (req, res) => {
+  res.json({
+    name: 'Evolution API',
+    version: '2.3.6',
+    description: 'Rest API for WhatsApp communication',
+    platform: 'Vercel',
+    status: 'running'
+  });
+});
+
+// Fallback for all other routes
+app.use('*', (req, res) => {
+  res.status(404).json({
+    error: 'Not Found',
+    message: 'Evolution API routes are not available in Vercel environment',
+    available_endpoints: ['/health', '/api/info'],
+    note: 'This is a simplified version for Vercel deployment'
+  });
 });
 
 // Vercel serverless function handler
