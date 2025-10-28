@@ -129,8 +129,8 @@ import makeWASocket, {
   WAPresence,
   WASocket,
 } from 'baileys';
-import { Label } from 'baileys/lib/Types/Label';
-import { LabelAssociation } from 'baileys/lib/Types/LabelAssociation';
+import { Label } from 'baileys/lib/Types/Label.js';
+import { LabelAssociation } from 'baileys/lib/Types/LabelAssociation.js';
 import { spawn } from 'child_process';
 import { isArray, isBase64, isURL } from 'class-validator';
 import EventEmitter2 from 'eventemitter2';
