@@ -32,6 +32,9 @@
   "exclude": ["node_modules", "./test", "./dist", "./prisma"],
   "include": [
     "src/**/*",
-    "src/**/*.json"
+    "src/**/*.json",
+    "api/**/*",
+    "*.ts",
+    "*.js"
   ]
 }
