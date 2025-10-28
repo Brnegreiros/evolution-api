@@ -1,37 +1,53 @@
 // Vercel serverless function entry point
-const { createServer } = require('http');
+const express = require('express');
 
-// Import the compiled Evolution API
-let app;
+// Create Express app
+const app = express();
+
+// Import the compiled Evolution API routes and middleware
+let evolutionApp;
 try {
-  app = require('../dist/main');
+  // Import the main application logic
+  const { router } = require('../dist/api/routes/index.router');
+  const { configService } = require('../dist/config/env.config');
+  
+  // Set up basic middleware
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  
+  // Set CORS headers
+  app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, apikey');
+    
+    if (req.method === 'OPTIONS') {
+      res.status(200).end();
+      return;
+    }
+    next();
+  });
+  
+  // Mount Evolution API routes
+  app.use('/', router);
+  
+  evolutionApp = app;
 } catch (error) {
   console.error('Failed to load Evolution API:', error);
-  app = null;
+  evolutionApp = null;
 }
 
 // Vercel serverless function handler
 module.exports = async (req, res) => {
   try {
-    // Set CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, apikey');
-    
-    // Handle preflight requests
-    if (req.method === 'OPTIONS') {
-      res.status(200).end();
-      return;
-    }
-
     // Check if app is loaded
-    if (!app) {
+    if (!evolutionApp) {
       res.status(500).json({ error: 'Evolution API not loaded' });
       return;
     }
 
     // Handle the request with Evolution API
-    await app(req, res);
+    evolutionApp(req, res);
   } catch (err) {
     console.error('Error occurred handling', req.url, err);
     res.status(500).json({ error: 'Internal Server Error' });
