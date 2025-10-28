@@ -2,26 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/main.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["dist/**", "prisma/**", "public/**"]
-      }
+      "src": "api/index.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/main.js"
+      "dest": "/api/index.js"
     }
   ],
   "env": {
     "NODE_ENV": "production"
   },
   "functions": {
-    "dist/main.js": {
+    "api/index.js": {
       "maxDuration": 30
     }
-  },
-  "buildCommand": "npm run vercel-build"
+  }
 }

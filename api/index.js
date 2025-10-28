@@ -1,17 +1,17 @@
 // Vercel serverless function entry point
 const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('next');
-
-const dev = process.env.NODE_ENV !== 'production';
-const hostname = 'localhost';
-const port = process.env.PORT || 3000;
 
 // Import the compiled Evolution API
-const app = require('../dist/main');
+let app;
+try {
+  app = require('../dist/main');
+} catch (error) {
+  console.error('Failed to load Evolution API:', error);
+  app = null;
+}
 
-// Create HTTP server
-const server = createServer(async (req, res) => {
+// Vercel serverless function handler
+module.exports = async (req, res) => {
   try {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -20,8 +20,13 @@ const server = createServer(async (req, res) => {
     
     // Handle preflight requests
     if (req.method === 'OPTIONS') {
-      res.writeHead(200);
-      res.end();
+      res.status(200).end();
+      return;
+    }
+
+    // Check if app is loaded
+    if (!app) {
+      res.status(500).json({ error: 'Evolution API not loaded' });
       return;
     }
 
@@ -29,15 +34,6 @@ const server = createServer(async (req, res) => {
     await app(req, res);
   } catch (err) {
     console.error('Error occurred handling', req.url, err);
-    res.statusCode = 500;
-    res.end('Internal Server Error');
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-});
-
-// Start server
-server.listen(port, (err) => {
-  if (err) throw err;
-  console.log(`> Evolution API ready on http://${hostname}:${port}`);
-});
-
-module.exports = server;
+};

@@ -4,11 +4,24 @@ Este projeto foi configurado para deploy no Vercel como uma API serverless.
 
 ## Configuração do Vercel
 
+### Framework Selection
+- **NÃO selecione Next.js**
+- **NÃO selecione nenhum framework**
+- Deixe em branco ou selecione "Other"
+
 ### Arquivos de Configuração
 
 - `vercel.json` - Configuração principal do Vercel
 - `.vercelignore` - Arquivos ignorados no deploy
 - `api/index.js` - Ponto de entrada para serverless functions
+
+### Build Settings no Vercel
+
+Configure manualmente no painel do Vercel:
+
+- **Build Command**: `npm run vercel-build`
+- **Output Directory**: `dist`
+- **Install Command**: `npm install`
 
 ### Variáveis de Ambiente Necessárias
 
@@ -39,8 +52,8 @@ LOG_LEVEL=ERROR,WARN,INFO
 O Vercel executará automaticamente:
 
 1. `npm install` - Instala dependências
-2. `npm run vercel-build` - Compila o projeto TypeScript
-3. Deploy da função serverless
+2. `npm run vercel-build` - Compila o projeto TypeScript + gera Prisma
+3. Deploy da função serverless em `api/index.js`
 
 ### Limitações do Vercel
 
