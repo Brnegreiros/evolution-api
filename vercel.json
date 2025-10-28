@@ -6,7 +6,7 @@
       "use": "@vercel/node",
       "config": {
         "maxDuration": 30,
-        "includeFiles": ["src/**", "dist/**", "prisma/**", "package.json", "tsconfig.json", "tsconfig.vercel.json", "tsup.config.ts", "vercel-build.sh", "vercel-build-alt.sh", "vercel-build-simple.sh"]
+        "includeFiles": ["src/**", "dist/**", "prisma/**", "package.json", "tsconfig.json", "tsup.config.ts"]
       }
     }
   ],
@@ -18,7 +18,5 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "buildCommand": "npm run vercel-build-simple",
-  "installCommand": "npm install"
+  }
 }
