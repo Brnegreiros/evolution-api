@@ -1,5 +1,4 @@
-# Development files
-src/
+# Test files
 test/
 *.test.ts
 *.spec.ts

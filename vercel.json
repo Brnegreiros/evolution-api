@@ -5,7 +5,8 @@
       "src": "api/index.js",
       "use": "@vercel/node",
       "config": {
-        "maxDuration": 30
+        "maxDuration": 30,
+        "includeFiles": ["src/**", "dist/**", "prisma/**", "package.json", "tsconfig.json", "tsup.config.ts"]
       }
     }
   ],
@@ -17,5 +18,7 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "buildCommand": "npm run vercel-build",
+  "installCommand": "npm install"
 }
